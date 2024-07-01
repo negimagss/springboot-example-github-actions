@@ -25,6 +25,10 @@ public class TestController {
 				object.put("currentDateTime", formattedDateTime);
 		return object;
 	}
+	@GetMapping("/hello")
+    public String helloPage() {
+        return "hello"; // This maps to src/main/resources/static/hello.html
+    }
 
 	@PostMapping("/postvalue")
     public Object postValue(@RequestBody Map<String, Integer> requestBody) {
