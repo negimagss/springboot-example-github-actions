@@ -2,7 +2,8 @@ name: CICD
 
 on:
   push:
-    branches: [master]
+    branches:
+      - deploy-ec2
 
 jobs:
   build:
@@ -20,17 +21,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{secrets.DUSERNAME}} -p ${{secrets.DPASSWORD}}
       - name: Build docker image
-        run: docker build -t integrationninjas/springboot-example .
+        run: docker build -t negimags/springboot-example .
       - name: Publish image to docker hub
-        run: docker push integrationninjas/springboot-example:latest
+        run: docker push negimags/springboot-example:latest
 
   deploy:
     needs: build
-    runs-on: [aws-ec2]
+    runs-on: aws-ec2
     steps:
       - name: Pull Image from docker hub
-        run: docker pull integrationninjas/springboot-example:latest
+        run: docker pull negimags/springboot-example:latest
       - name: Delete old container
         run: docker rm -f springboot-example-container
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name springboot-example-container integrationninjas/springboot-example
+        run: docker run -d -p 8080:8080 --name springboot-example-container negimags/springboot-example
