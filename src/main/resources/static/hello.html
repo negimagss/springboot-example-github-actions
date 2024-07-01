@@ -6,46 +6,62 @@
     <title>Hello Page</title>
 </head>
 <body>
-        <h1>Hello Page</h1>
-        <div id="username-container">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Enter Username">
-        </div>
-<div id="response"></div>
-<script>
-    // Get the username input element
-    const usernameInput = document.getElementById('username');
-  
-    // Function to get current date and time (improved formatting)
-    function getFormattedDateTime() {
-      const now = new Date();
-      return now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
-    }
-  
-    fetch('/')
-      .then(response => response.json())
-      .then(data => {
+    <h1>Login Page</h1>
+    <div id="username-container">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter Username">
+    </div>
+    <button id="get-name-button">Get Name</button>
+    <div id="response"></div>
+    
+    <script>
+        // Get the button and response div
+        const getNameButton = document.getElementById('get-name-button');
         const responseDiv = document.getElementById('response');
-        const username = usernameInput.value; // Get username from input
-        const loginTime = getFormattedDateTime();
-  
-        responseDiv.innerHTML = `
-            <p>Username: ${username}</p>
-            <p>Login Time: ${loginTime}</p>
-            <p>Name: ${data.name}</p>
-            <p>Text: ${data.text}</p>
-            <p>Current Date and Time: ${data.currentDateTime}</p>
-        `;
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  </script>
+        let removeButton = false; // Flag to control button removal
+      
+        // Function to get current date and time (improved formatting)
+        function getFormattedDateTime() {
+          const now = new Date();
+          return now.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+          });
+        }
+      
+        // Add event listener for button click
+        getNameButton.addEventListener('click', function() {
+          removeButton = true; // Set flag for removal after data fetch
+          const usernameInput = document.getElementById('username'); // Get username input
+          const username = usernameInput.value;
+      
+          fetch('/')
+            .then(response => response.json())
+            .then(data => {
+              const loginTime = getFormattedDateTime();
+      
+              // Update responseDiv content only after data is fetched
+              responseDiv.innerHTML = `
+                  <p>Username: ${username}</p>
+                  <p>Login Time: ${loginTime}</p>
+                  <p>Name: ${data.name}</p>
+                  <p>Text: ${data.text}</p>
+                  <p>Current Date and Time: ${data.currentDateTime}</p>
+              `;
+      
+              if (removeButton) { // Remove button and input field only after data fetch
+                getNameButton.remove();
+                usernameInput.remove();
+              }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        });
+      </script>
+      
   
 </body>
 </html>
