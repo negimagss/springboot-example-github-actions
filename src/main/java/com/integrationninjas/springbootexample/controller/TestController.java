@@ -1,6 +1,8 @@
 package com.integrationninjas.springbootexample.controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,11 @@ public class TestController {
 		Map<String, String> object = new HashMap<>();
 		object.put("name", "Shardul Negi");
 		object.put("text", "First Time using Github Actions");
+		        // Calculate and add current date and time to the response
+				LocalDateTime currentDateTime = LocalDateTime.now();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				String formattedDateTime = currentDateTime.format(formatter);
+				object.put("currentDateTime", formattedDateTime);
 		return object;
 	}
 
