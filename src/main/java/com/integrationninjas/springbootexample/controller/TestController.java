@@ -100,5 +100,29 @@ public class TestController {
 
 		return "null";
     }
+	@GetMapping("/quoteinline")
+    public String quotes(@RequestParam double latitude,
+                         @RequestParam double longitude,
+                         @RequestParam String startTime,
+                         @RequestParam String endTime) {
+        try {
+            String url = String.format("https://api-sandbox.parkwhiz.com/v4/quotes/?q=coordinates:%f,%f&start_time=%s&end_time=%s",
+                                        latitude, longitude, startTime, endTime);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("User-Agent", "Mozilla/5.0")
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Response Code: " + response.statusCode());
+            System.out.println(response.body());
+            return response.body();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
 
 }
