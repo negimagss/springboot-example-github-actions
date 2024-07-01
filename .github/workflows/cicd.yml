@@ -3,7 +3,7 @@ name: CICD
 on:
   push:
     branches:
-      - deploy-ec2
+      - master
 
 jobs:
   build:
