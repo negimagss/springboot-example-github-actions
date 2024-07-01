@@ -23,7 +23,7 @@ jobs:
       - name: Build docker image
         run: docker build -t negimags/springboot-example .
       - name: Publish image to docker hub
-        run: docker push negimagss/springboot-example:latest
+        run: docker push negimags/springboot-example:latest
 
   deploy:
     needs: build
