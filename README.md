@@ -1,4 +1,4 @@
-# springboot-example
+# springboot-example for deploying using Github actions
 Spring Boot Example Application
 
 
